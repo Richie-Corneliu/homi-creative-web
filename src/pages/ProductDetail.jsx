@@ -210,7 +210,7 @@ export default function ProductDetail() {
           <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 pb-12 sm:pb-16">
             {/* Gallery Column */}
             <div className="lg:col-span-5 flex flex-col gap-4">
-              <div className="aspect-[540/480] w-full rounded-[20px] bg-[#EAE6DA] border border-[#D8D3C4] overflow-hidden flex items-center justify-center">
+              <div className="aspect-[540/480] w-full rounded-[20px] bg-white border border-[#D8D3C4] overflow-hidden flex items-center justify-center">
                 {showActiveImage ? (
                   <img
                     src={activeImageUrl}
@@ -219,7 +219,7 @@ export default function ProductDetail() {
                     height={480}
                     fetchPriority="high"
                     loading="eager"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain bg-white p-4"
                     onError={() => markUrlBroken(activeImageUrl)}
                   />
                 ) : (
@@ -247,7 +247,7 @@ export default function ProductDetail() {
                         onClick={() => setActivePhotoIndex(index)}
                         aria-label={`Pilih foto ${index + 1} untuk ${product.name}`}
                         aria-pressed={active}
-                        className={`w-20 h-20 sm:w-[100px] sm:h-[100px] rounded-xl overflow-hidden bg-[#EAE6DA] flex items-center justify-center transition-colors ${
+                        className={`w-20 h-20 sm:w-[100px] sm:h-[100px] rounded-xl overflow-hidden bg-white flex items-center justify-center transition-colors ${
                           active
                             ? 'border-2 border-[#0F7A27]'
                             : 'border border-[#D8D3C4] hover:border-[#0F7A27]'
@@ -263,7 +263,7 @@ export default function ProductDetail() {
                             alt=""
                             width={100}
                             height={100}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-contain bg-white p-2"
                             onError={() => markUrlBroken(imgUrl)}
                           />
                         )}

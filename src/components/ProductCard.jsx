@@ -10,7 +10,7 @@ export default function ProductCard({ product, eager = false }) {
 
   return (
     <article className="bg-white border border-[#E6E3D8] rounded-2xl p-4 flex flex-col gap-3.5 h-full">
-      <div className="aspect-[4/3] w-full rounded-xl overflow-hidden bg-[#EAE6DA] border border-[#D8D3C4] flex items-center justify-center">
+      <div className="aspect-[4/3] w-full rounded-xl overflow-hidden bg-white border border-[#D8D3C4] flex items-center justify-center">
         {showImage ? (
           <img
             src={safeImageUrl}
@@ -18,7 +18,7 @@ export default function ProductCard({ product, eager = false }) {
             width={400}
             height={300}
             loading={eager ? 'eager' : 'lazy'}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain bg-white p-3"
             onError={() => setImgError(true)}
           />
         ) : (

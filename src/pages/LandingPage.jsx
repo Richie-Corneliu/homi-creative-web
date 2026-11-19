@@ -90,7 +90,7 @@ export default function LandingPage() {
         </div>
 
         <div className="lg:col-span-5 w-full">
-          <div className="aspect-[540/420] w-full rounded-3xl bg-[#EAE6DA] border border-[#D8D3C4] overflow-hidden flex items-center justify-center">
+          <div className="aspect-[540/420] w-full rounded-3xl bg-white border border-[#D8D3C4] overflow-hidden flex items-center justify-center">
             {showHeroImage ? (
               <img
                 src={heroImageUrl}
@@ -99,7 +99,7 @@ export default function LandingPage() {
                 height={420}
                 fetchPriority="high"
                 loading="eager"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain bg-white p-4"
                 onError={() => setHeroImageError(true)}
               />
             ) : (
