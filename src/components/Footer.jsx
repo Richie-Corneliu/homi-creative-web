@@ -19,6 +19,16 @@ export default function Footer() {
   return (
     <footer className="bg-[#0B5D1E] text-white">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-20 py-12 sm:py-16 lg:py-20 flex flex-col items-center text-center gap-6">
+        <div className="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-2.5">
+          <img
+            src="/logo.png"
+            alt="Homi Creative"
+            width={639}
+            height={206}
+            className="h-12 w-auto object-contain"
+          />
+        </div>
+
         <h2 className="max-w-[720px] text-2xl sm:text-3xl lg:text-[34px] font-bold leading-tight text-white">
           Tertarik? Hubungi kami lewat Instagram atau bisa kunjungi Shopee
         </h2>

@@ -33,9 +33,15 @@ export default function Navbar() {
       <div className="max-w-[1440px] mx-auto h-20 px-5 sm:px-8 lg:px-20 flex items-center justify-between gap-4">
         <Link
           to="/"
-          className="min-h-[44px] inline-flex items-center text-lg sm:text-xl font-bold tracking-tight text-[#0F7A27] hover:text-[#0B5D1E] transition-colors"
+          className="min-h-[44px] inline-flex items-center shrink-0"
         >
-          HOMI CREATIVE
+          <img
+            src="/logo.png"
+            alt="Homi Creative"
+            width={639}
+            height={206}
+            className="h-10 sm:h-11 w-auto object-contain"
+          />
         </Link>
 
         <nav aria-label="Navigasi utama" className="hidden sm:flex items-center gap-9">
