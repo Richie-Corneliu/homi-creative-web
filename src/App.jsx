@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -6,6 +7,10 @@ import CatalogPage from './pages/CatalogPage';
 import ProductDetail from './pages/ProductDetail';
 
 function NotFoundPage() {
+  useEffect(() => {
+    document.title = 'Halaman Tidak Ditemukan - HOMI CREATIVE';
+  }, []);
+
   return (
     <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-20 py-20 text-center flex flex-col items-center gap-4">
       <h1 className="text-3xl font-bold text-[#142217]">Halaman Tidak Ditemukan</h1>

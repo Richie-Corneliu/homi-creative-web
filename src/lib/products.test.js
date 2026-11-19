@@ -5,6 +5,8 @@ import {
   getProductImages,
   getSafeImageUrl,
   isValidHttpsUrl,
+  isValidProductId,
+  normalizeProduct,
   parseFeatures,
 } from './products.js';
 
@@ -48,4 +50,27 @@ test('parseFeatures parses JSON strings, string arrays, and object arrays', () =
     [{ title: 'Sekat Serbaguna', description: 'Muat untuk sendok dan garpu' }]
   );
   assert.deepEqual(parseFeatures('not-json'), [{ title: 'not-json', description: '' }]);
+});
+
+test('normalizeProduct trims trailing whitespace and newlines', () => {
+  const clean = normalizeProduct({
+    id: 13,
+    name: ' Sapu GX Outdoor \n',
+    category: 'Alat Kebersihan\n',
+    image_url: 'https://example.com/a.jpg\n',
+    shopee_url: ' https://shopee.co.id ',
+  });
+  assert.equal(clean.name, 'Sapu GX Outdoor');
+  assert.equal(clean.category, 'Alat Kebersihan');
+  assert.equal(clean.image_url, 'https://example.com/a.jpg');
+  assert.equal(clean.shopee_url, 'https://shopee.co.id');
+});
+
+test('isValidProductId accepts positive integers and UUIDs only', () => {
+  assert.equal(isValidProductId('13'), true);
+  assert.equal(isValidProductId(1), true);
+  assert.equal(isValidProductId('550e8400-e29b-41d4-a716-446655440000'), true);
+  assert.equal(isValidProductId('abc'), false);
+  assert.equal(isValidProductId(''), false);
+  assert.equal(isValidProductId('-1'), false);
 });

@@ -3,6 +3,46 @@ import { isSupabaseConfigured, supabase } from './supabase.js';
 export const PRODUCT_CATEGORIES = ['Semua', 'Alat Kebersihan', 'Dapur & Rumah'];
 
 /**
+ * Trim whitespace/newlines from product text fields returned by the database.
+ */
+export function normalizeProduct(product) {
+  if (!product || typeof product !== 'object') return product;
+  return {
+    ...product,
+    name: typeof product.name === 'string' ? product.name.trim() : product.name,
+    category:
+      typeof product.category === 'string'
+        ? product.category.trim()
+        : product.category,
+    description:
+      typeof product.description === 'string'
+        ? product.description.trim()
+        : product.description,
+    image_url:
+      typeof product.image_url === 'string'
+        ? product.image_url.trim()
+        : product.image_url,
+    shopee_url:
+      typeof product.shopee_url === 'string'
+        ? product.shopee_url.trim()
+        : product.shopee_url,
+  };
+}
+
+/**
+ * Validate route product ID (numeric bigint or UUID) before querying Supabase.
+ */
+export function isValidProductId(id) {
+  if (typeof id === 'number') return Number.isInteger(id) && id > 0;
+  if (typeof id !== 'string') return false;
+  const trimmed = id.trim();
+  return (
+    /^\d+$/.test(trimmed) ||
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(trimmed)
+  );
+}
+
+/**
  * Format numeric price into Indonesian Rupiah display (e.g. "Rp 35.000").
  */
 export function formatRupiah(value) {
@@ -147,7 +187,7 @@ export async function fetchFeaturedProducts(limit = 3) {
   if (error) {
     return { data: [], error: formatSupabaseError(error) };
   }
-  return { data: data ?? [], error: null };
+  return { data: (data ?? []).map(normalizeProduct), error: null };
 }
 
 /**
@@ -165,7 +205,7 @@ export async function fetchAllProducts() {
   if (error) {
     return { data: [], error: formatSupabaseError(error) };
   }
-  return { data: data ?? [], error: null };
+  return { data: (data ?? []).map(normalizeProduct), error: null };
 }
 
 /**
@@ -175,16 +215,22 @@ export async function fetchProductById(id) {
   if (!isSupabaseConfigured || !supabase) {
     return { data: null, error: getConfigError() };
   }
+  if (!isValidProductId(id)) {
+    return { data: null, error: null };
+  }
   const { data, error } = await supabase
     .from('products')
     .select('*')
-    .eq('id', id)
+    .eq('id', String(id).trim())
     .maybeSingle();
 
   if (error) {
+    if (error.code === '22P02') {
+      return { data: null, error: null };
+    }
     return { data: null, error: formatSupabaseError(error) };
   }
-  return { data: data ?? null, error: null };
+  return { data: data ? normalizeProduct(data) : null, error: null };
 }
 
 /**
@@ -204,8 +250,13 @@ export async function fetchSimilarProducts(category, excludeId, limit = 3) {
     return { data: [], error: formatSupabaseError(error) };
   }
 
-  const rows = data ?? [];
-  const sameCategory = category ? rows.filter((item) => item.category === category) : [];
-  const others = category ? rows.filter((item) => item.category !== category) : rows;
+  const normalizedCategory = typeof category === 'string' ? category.trim() : '';
+  const rows = (data ?? []).map(normalizeProduct);
+  const sameCategory = normalizedCategory
+    ? rows.filter((item) => item.category === normalizedCategory)
+    : [];
+  const others = normalizedCategory
+    ? rows.filter((item) => item.category !== normalizedCategory)
+    : rows;
   return { data: [...sameCategory, ...others].slice(0, limit), error: null };
 }

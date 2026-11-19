@@ -164,7 +164,7 @@ export default function ProductDetail() {
               aria-hidden="true"
             />
             <div>
-              <p className="font-bold text-base">Gagal memuat detail produk</p>
+              <h1 className="font-bold text-base">Gagal memuat detail produk</h1>
               <p className="text-sm text-[#4A554C] mt-0.5">{error}</p>
             </div>
           </div>
